@@ -1,0 +1,36 @@
+{
+  "name": "meta2-logger",
+  "version": "1.0.0",
+  "description": "Light logging library for NodeJS with TypeScript support.",
+  "main": "dist/index.js",
+  "typings": "dist/index",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "sandbox": "npm run build; node ./dist/sandbox/test.js",
+    "prepublish": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/metaplatform/meta2-logger.git"
+  },
+  "keywords": [
+    "log",
+    "logging",
+    "logger",
+    "facility"
+  ],
+  "author": "Jiri Hybek <jiri@hybek.cz> (http://jiri.hybek.cz/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/metaplatform/meta2-logger/issues"
+  },
+  "homepage": "https://github.com/metaplatform/meta2-logger",
+  "dependencies": {
+    "colors": "^1.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^2.1.6",
+    "@types/node": "^7.0.18"
+  }
+}

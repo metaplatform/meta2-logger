@@ -1,4 +1,4 @@
-# meta-logger
+# meta2-logger
 Lightweight logging library for NodeJS with support of facilities and multiple transports.
 
 Second version with TypeScript support.

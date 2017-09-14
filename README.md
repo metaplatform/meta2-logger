@@ -5,7 +5,10 @@ Second version with TypeScript support.
 
 ## Usage
 ```javascript
-var logger = require("meta-logger");
+var Logger = require("meta2-logger");
+
+//Create logger instance
+var logger = new Logger.Logger();
 
 //Setup targets
 logger.toConsole({
@@ -153,72 +156,21 @@ MyLogger.prototype.write = function(level, facility, msg){
 };
 ```
 
-## Custom Logging Levels
-Logging levels can be set by modifying `logger.levels` property.
+## TypeScript Usage
 
-```javascript
-logger.levels = {
-	custom: 4,
-	debug: 	3,
-	info: 	2,
-	warn: 	1,
-	error: 	0
-};
-```
+```typescript
+import {Logger} from 'meta2-logger';
 
-## Logger object reference
-```javascript
-logger = {
+let logger = new Logger();
 
-	//Colors library for console coloring
-	colors: require("colors"),
+logger.toConsole();
+logger.error("It's working!");
 
-	//Logging levels
-	levels: {
-		debug: 	3,
-		info: 	2,
-		warn: 	1,
-		error: 	0
-	},
+//Or using default instance
+import {default as logger} from 'meta2-logger';
 
-	//Object contains registered targets
-	targets: {},
-
-	//Logging functions
-	log: function(level, args...),
-	debug: function(args...),
-	info: function(args...),
-	warn: function(args...),
-	error: function(args...),
-
-	//Facility shorthand
-	facility: function(name){
-
-		return {
-
-			log: function(level, args...),
-			debug: function(args...),
-			info: function(args...),
-			warn: function(args...),
-			error: function(args...)
-
-		};
-
-	},
-
-	//Target shorthands
-	to: function(name, targetObject),
-	toConsole: function(options),
-	toFile: function(filename, options),
-	toJsonFile: function(filename, options),
-
-	//Target constructors
-	BaseTarget: function(options),
-	ConsoleTarget: function(options),
-	FileTarget: function(filename, options),
-	JsonFileTarget: function(filename, options)
-
-};
+logger.toConsole();
+logger.error("It's working!");
 ```
 
 ## License

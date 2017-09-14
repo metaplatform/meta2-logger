@@ -1,5 +1,6 @@
 # Typescript sources
 /ts
+tsconfig.json
 
 #Sandbox
 sandbox

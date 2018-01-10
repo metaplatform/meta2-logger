@@ -1,13 +1,14 @@
 {
   "name": "meta2-logger",
-  "version": "1.0.1",
-  "description": "Light logging library for NodeJS with TypeScript support.",
-  "main": "dist/index.js",
-  "typings": "dist/index",
+  "version": "2.0.0",
+  "description": "Simple logging library for NodeJS with TypeScript support and multiple targets including GrayLog.",
+  "main": "dist/src/index.js",
+  "typings": "dist/src/index",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
-    "sandbox": "npm run build; node ./dist/sandbox/test.js",
+    "build": "rm -rf ./dist; tsc",
+    "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}' '__tests__/**/*.{ts,tsx}'",
+    "test": "jest",
+    "pretest": "npm run lint; npm run build",
     "prepublish": "npm run build"
   },
   "repository": {
@@ -18,7 +19,9 @@
     "log",
     "logging",
     "logger",
-    "facility"
+    "facility",
+    "graylog",
+    "gelf"
   ],
   "author": "Jiri Hybek <jiri@hybek.cz> (http://jiri.hybek.cz/)",
   "license": "MIT",
@@ -27,10 +30,14 @@
   },
   "homepage": "https://github.com/metaplatform/meta2-logger",
   "dependencies": {
-    "colors": "^1.1.0"
+    "colors": "^1.1.0",
+    "gelf": "^2.0.0"
   },
   "devDependencies": {
-    "typescript": "^2.1.6",
-    "@types/node": "^7.0.18"
+    "@types/jest": "^22.0.1",
+    "@types/node": "^7.0.18",
+    "jest": "^22.0.4",
+    "tslint": "^5.8.0",
+    "typescript": "^2.1.6"
   }
 }

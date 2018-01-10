@@ -1,6 +1,5 @@
 # Typescript sources
-/ts
+/src
+/__tests__
 tsconfig.json
-
-#Sandbox
-sandbox
+tslint.json

@@ -82,10 +82,9 @@ logger.toConsole({
 	facilities: [ "test" ]
 }).toJsonFile("demo.json", {
 	level: LOG_LEVEL.ERROR
-	level: "warn"
 }).toGrayLog({
 	level: LOG_LEVEL.DEBUG,
-	graylogHost: "localhost"
+	graylogHostname: "localhost"
 	host: "myApp"
 });
 
@@ -94,7 +93,6 @@ logger.debug("Hello %s", "debug");
 logger.info("Hello %s", "info");
 logger.notice("Hello %s", "notice");
 logger.warn("Hello %s", "warn"); // or logger.warning("Hello %s", "warn");
-logger.break("Hello %s", "break"); // useful for debugging
 logger.error("Hello %s", "error");
 logger.crit("Hello %s", "critical");
 logger.alert("Hello %s", "alert");
@@ -131,10 +129,9 @@ logger.toConsole({
 	facilities: [ "test" ]
 }).toJsonFile("demo.json", {
 	level: Logger.LOG_LEVEL.ERROR
-	level: "warn"
 }).toGrayLog({
 	level: Logger.LOG_LEVEL.DEBUG,
-	graylogHost: "localhost"
+	graylogHostname: "localhost"
 	host: "myApp"
 });
 
@@ -143,7 +140,6 @@ logger.debug("Hello %s", "debug");
 logger.info("Hello %s", "info");
 logger.notice("Hello %s", "notice");
 logger.warn("Hello %s", "warn"); // or logger.warning("Hello %s", "warn");
-logger.break("Hello %s", "break"); // usefull for debugging
 logger.error("Hello %s", "error");
 logger.crit("Hello %s", "critical");
 logger.alert("Hello %s", "alert");

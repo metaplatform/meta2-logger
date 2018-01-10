@@ -437,7 +437,6 @@ logger.toConsole({
 ```typescript
 class Logger {
 	log(level: LOG_LEBEL, ...args): void;
-	break(...args): void;
 	debug(...args): void;
 	info(...args): void;
 	notice(...args): void;
@@ -463,7 +462,6 @@ class Logger {
 
 class LoggerFacility {
 	constructor(protected logger: Logger, protected prefix: string);
-	break(...args): void;
 	debug(...args): void;
 	info(...args): void;
 	notice(...args): void;
@@ -477,11 +475,10 @@ class LoggerFacility {
 }
 
 enum LOG_LEVEL {
-	DEBUG = 8,
-	INFO = 7,
-	NOTICE = 6,
-	WARN = 5,
-	BREAK = 4,
+	DEBUG = 7,
+	INFO = 6,
+	NOTICE = 5,
+	WARN = 4,
 	ERROR = 3,
 	CRITICAL = 2,
 	ALERT = 1,
@@ -490,7 +487,6 @@ enum LOG_LEVEL {
 
 interface ILogger {
 	log(...args);
-	break(...args);
 	debug(...args);
 	info(...args);
 	notice(...args);

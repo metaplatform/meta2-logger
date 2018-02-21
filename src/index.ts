@@ -15,6 +15,7 @@ export * from "./Logger";
 export * from "./LoggerFacility";
 export * from "./BaseTarget";
 export * from "./ConsoleTarget";
+export * from "./MemoryTarget";
 export * from "./FileTarget";
 export * from "./JsonFileTarget";
 export * from "./GraylogTarget";

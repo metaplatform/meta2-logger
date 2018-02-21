@@ -159,7 +159,8 @@ export class GraylogTarget extends BaseTarget {
 			short_message: msgShort,
 			full_message: msgFull,
 			timestamp: Date.now() / 1000,
-			level: logLevel
+			level: logLevel,
+			facility: this.facilityPrefix + ( facility || "default" )
 		};
 
 		for (const i in this.additionalFields)

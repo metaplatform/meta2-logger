@@ -23,7 +23,8 @@
         "no-string-literal": false,
         "object-literal-shorthand": false,
         "variable-name": false,
-        "forin": false
+        "forin": false,
+        "max-classes-per-file": false
     },
     "rulesDirectory": []
 }

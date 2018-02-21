@@ -1,6 +1,6 @@
 {
   "name": "meta2-logger",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "Simple logging library for NodeJS with TypeScript support and multiple targets including GrayLog.",
   "main": "dist/src/index.js",
   "typings": "dist/src/index",

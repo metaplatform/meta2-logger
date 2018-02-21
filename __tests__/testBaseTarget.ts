@@ -56,6 +56,19 @@ describe("ConsoleTarget class", () => {
 		});
 
 		expect(target).toBeInstanceOf(BaseTarget);
+		expect(target.getLevel()).toEqual(LOG_LEVEL.DEBUG);
+
+	});
+
+	it("#setLevel should change log level", () => {
+
+		const target = new MyTarget(null, {
+			level: LOG_LEVEL.DEBUG
+		});
+
+		target.setLevel(LOG_LEVEL.NOTICE);
+
+		expect(target.getLevel()).toEqual(LOG_LEVEL.NOTICE);
 
 	});
 

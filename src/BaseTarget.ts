@@ -68,6 +68,26 @@ export abstract class BaseTarget implements ILoggerTarget {
 	}
 
 	/**
+	 * Sets log level
+	 *
+	 * @param level New log level
+	 */
+	public setLevel(level: LOG_LEVEL) {
+
+		this.level = level;
+
+	}
+
+	/**
+	 * Returns log level
+	 */
+	public getLevel() {
+
+		return this.level;
+
+	}
+
+	/**
 	 * Log message
 	 *
 	 * @param level Log level
@@ -82,9 +102,14 @@ export abstract class BaseTarget implements ILoggerTarget {
 
 		const msg = [util.format.apply(this, args)];
 
+		// Add trace
+		if (meta["trace"])
+			msg.push("\n  " + meta["trace"]);
+
 		// Add meta data
 		for (const i in meta)
-			msg.unshift("(" + i + "=" + String(meta[i]) + ")");
+			if (i !== "trace")
+				msg.unshift("(" + i + "=" + String(meta[i]) + ")");
 
 		// Add facility
 		if (facility)

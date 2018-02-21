@@ -17,7 +17,9 @@ describe("LoggerFacility class", () => {
 
 		const target: ILoggerTarget = {
 			log: jest.fn(),
-			close: jest.fn()
+			close: jest.fn(),
+			setLevel: jest.fn(),
+			getLevel: jest.fn()
 		};
 
 		return target;
@@ -46,6 +48,18 @@ describe("LoggerFacility class", () => {
 		const facility = new LoggerFacility(logger, "fac");
 
 		expect(facility).toBeInstanceOf(LoggerFacility);
+
+	});
+
+	it("should construct with configuration", () => {
+
+		const logger = new Logger();
+		const facility = new LoggerFacility(logger, "fac", {
+			level: LOG_LEVEL.WARN
+		});
+
+		expect(facility).toBeInstanceOf(LoggerFacility);
+		expect(facility.getLevel()).toEqual(LOG_LEVEL.WARN);
 
 	});
 
@@ -146,6 +160,19 @@ describe("LoggerFacility class", () => {
 		mock.facility.panic("arg1", "arg2");
 
 		expect(mock.target.log).toHaveBeenLastCalledWith(LOG_LEVEL.EMERGENCY, "fac", ["arg1", "arg2"], {});
+
+	});
+
+	it("#setLevel should change log level", () => {
+
+		const mock = mockLoggerFacilityWithTarget("fac");
+
+		mock.facility.setLevel(LOG_LEVEL.INFO);
+
+		mock.facility.debug("arg1", "arg2");
+
+		expect(mock.facility.getLevel()).toEqual(LOG_LEVEL.INFO);
+		expect(mock.target.log).toHaveBeenCalledTimes(0);
 
 	});
 

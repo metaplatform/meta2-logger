@@ -10,17 +10,67 @@ import {ILogger, LOG_LEVEL} from "./interfaces";
 import {Logger} from "./Logger";
 
 /**
+ * Logger facility configuration
+ */
+export interface ILoggerFacilityConfig {
+	level?: LOG_LEVEL;
+}
+
+/**
  * Facility class
  */
 export class LoggerFacility implements ILogger {
+
+	/** Facility log level */
+	protected level: LOG_LEVEL;
 
 	/**
 	 * Facility constructor
 	 *
 	 * @param logger Logger instance
 	 * @param prefix Facility name
+	 * @param config Facility configuration
 	 */
-	public constructor(protected logger: Logger, protected prefix: string) {}
+	public constructor(protected logger: Logger, protected prefix: string, config: ILoggerFacilityConfig = {}) {
+
+		this.level = config.level || LOG_LEVEL.DEBUG;
+
+	}
+
+	/**
+	 * Sets log level
+	 *
+	 * @param level New log level
+	 */
+	public setLevel(level: LOG_LEVEL) {
+
+		this.level = level;
+
+	}
+
+	/**
+	 * Returns log level
+	 */
+	public getLevel() {
+
+		return this.level;
+
+	}
+
+	/**
+	 * Internal log method that pass log message to parent logger - DO NOT USE DIRECTLY!
+	 *
+	 * @internal
+	 * @param level Log level
+	 * @param args Message arguments
+	 */
+	public _log(level: LOG_LEVEL, args: any) {
+
+		if (level > this.level) return;
+
+		this.logger._log(level, this.prefix, args);
+
+	}
 
 	/**
 	 * Logs message - first argument MUST be log level (from enum = number)
@@ -39,7 +89,7 @@ export class LoggerFacility implements ILogger {
 		const params = Array.prototype.slice.call(args);
 		const level = params.shift();
 
-		this.logger._log(level, this.prefix, params);
+		this._log(level, params);
 
 	}
 
@@ -57,7 +107,7 @@ export class LoggerFacility implements ILogger {
 	 */
 	public debug(...args) {
 
-		this.logger._log(LOG_LEVEL.DEBUG, this.prefix, Array.prototype.slice.call(args));
+		this._log(LOG_LEVEL.DEBUG, Array.prototype.slice.call(args));
 
 	}
 
@@ -75,7 +125,7 @@ export class LoggerFacility implements ILogger {
 	 */
 	public info(...args) {
 
-		this.logger._log(LOG_LEVEL.INFO, this.prefix, Array.prototype.slice.call(args));
+		this._log(LOG_LEVEL.INFO, Array.prototype.slice.call(args));
 
 	}
 
@@ -93,7 +143,7 @@ export class LoggerFacility implements ILogger {
 	 */
 	public notice(...args) {
 
-		this.logger._log(LOG_LEVEL.NOTICE, this.prefix, Array.prototype.slice.call(args));
+		this._log(LOG_LEVEL.NOTICE, Array.prototype.slice.call(args));
 
 	}
 
@@ -111,7 +161,7 @@ export class LoggerFacility implements ILogger {
 	 */
 	public warn(...args) {
 
-		this.logger._log(LOG_LEVEL.WARN, this.prefix, Array.prototype.slice.call(args));
+		this._log(LOG_LEVEL.WARN, Array.prototype.slice.call(args));
 
 	}
 
@@ -129,7 +179,7 @@ export class LoggerFacility implements ILogger {
 	 */
 	public warning(...args) {
 
-		this.logger._log(LOG_LEVEL.WARN, this.prefix, Array.prototype.slice.call(args));
+		this._log(LOG_LEVEL.WARN, Array.prototype.slice.call(args));
 
 	}
 
@@ -147,7 +197,7 @@ export class LoggerFacility implements ILogger {
 	 */
 	public error(...args) {
 
-		this.logger._log(LOG_LEVEL.ERROR, this.prefix, Array.prototype.slice.call(args));
+		this._log(LOG_LEVEL.ERROR, Array.prototype.slice.call(args));
 
 	}
 
@@ -165,7 +215,7 @@ export class LoggerFacility implements ILogger {
 	 */
 	public crit(...args) {
 
-		this.logger._log(LOG_LEVEL.CRITICAL, this.prefix, Array.prototype.slice.call(args));
+		this._log(LOG_LEVEL.CRITICAL, Array.prototype.slice.call(args));
 
 	}
 
@@ -183,7 +233,7 @@ export class LoggerFacility implements ILogger {
 	 */
 	public alert(...args) {
 
-		this.logger._log(LOG_LEVEL.ALERT, this.prefix, Array.prototype.slice.call(args));
+		this._log(LOG_LEVEL.ALERT, Array.prototype.slice.call(args));
 
 	}
 
@@ -201,7 +251,7 @@ export class LoggerFacility implements ILogger {
 	 */
 	public emerg(...args) {
 
-		this.logger._log(LOG_LEVEL.EMERGENCY, this.prefix, Array.prototype.slice.call(args));
+		this._log(LOG_LEVEL.EMERGENCY, Array.prototype.slice.call(args));
 
 	}
 
@@ -219,7 +269,7 @@ export class LoggerFacility implements ILogger {
 	 */
 	public panic(...args) {
 
-		this.logger._log(LOG_LEVEL.EMERGENCY, this.prefix, Array.prototype.slice.call(args));
+		this._log(LOG_LEVEL.EMERGENCY, Array.prototype.slice.call(args));
 
 	}
 

@@ -7,12 +7,21 @@
  */
 
 import {ILogger, ILoggerTarget, LOG_LEVEL} from "./interfaces";
-import {LoggerFacility} from "./LoggerFacility";
+import {LoggerFacility, ILoggerFacilityConfig} from "./LoggerFacility";
 
 import {ConsoleTarget, IConsoleTargetOptions} from "./ConsoleTarget";
+import {MemoryTarget, IMemoryTargetOptions} from "./MemoryTarget";
 import {FileTarget, IFileTargetOptions} from "./FileTarget";
 import {JsonFileTarget} from "./JsonFileTarget";
 import {GraylogTarget, IGraylogTargetOptions} from "./GraylogTarget";
+
+/**
+ * Logger configuration
+ */
+export interface ILoggerConfig {
+	level?: LOG_LEVEL;
+	trace?: boolean;
+}
 
 /**
  * Logger class
@@ -22,18 +31,105 @@ export class Logger implements ILogger {
 	/** Logging targets */
 	protected targets: { [K: string]: ILoggerTarget } = {};
 
+	/** Facility registry */
+	protected facilities: { [K: string]: LoggerFacility } = {};
+
+	/** Logger log level */
+	protected level: LOG_LEVEL;
+
+	/** If to include callstack */
+	protected trace: boolean;
+
 	/**
-	 * Internal log method that pass log message to all targets
+	 * Logger constructor
+	 *
+	 * @param config Logger configuration
+	 */
+	public constructor(config: ILoggerConfig = {}) {
+
+		this.level = config.level || LOG_LEVEL.DEBUG;
+		this.trace = config.trace || false;
+
+	}
+
+	/**
+	 * Sets log level
+	 *
+	 * @param level New log level
+	 */
+	public setLevel(level: LOG_LEVEL) {
+
+		this.level = level;
+
+	}
+
+	/**
+	 * Returns log level
+	 */
+	public getLevel() {
+
+		return this.level;
+
+	}
+
+	/**
+	 * Enabled or disabled storing of callstacks
+	 *
+	 * @param enabled Enable state
+	 */
+	public enableTrace(enabled: boolean = true) {
+
+		this.trace = enabled;
+
+	}
+
+	/**
+	 * Return is tracing is enabled
+	 */
+	public isTraceEnabled() {
+
+		return this.trace;
+
+	}
+
+	/**
+	 * Capture, filter and return log message stack trace
+	 */
+	public captureStackTrace(prefix: string = ">>\n") {
+
+		const traceObj = { stack: null };
+		Error.captureStackTrace(traceObj);
+
+		const lines = traceObj.stack.split("\n");
+		const out = [];
+
+		for (let i = 1; i < lines.length; i++)
+			if (!lines[i].match(/Logger(Facility)?\.(_log|captureStackTrace)/))
+				return prefix + out.concat(lines.splice(i)).join("\n");
+
+		return traceObj.stack;
+
+	}
+
+	/**
+	 * Internal log method that pass log message to all targets - DO NOT USE DIRECTLY!
+	 *
+	 * @internal
 	 * @param level Log level
 	 * @param facility Facility
 	 * @param args Message arguments
 	 */
 	public _log(level: LOG_LEVEL, facility: string, args: any) {
 
+		if (facility === null && level > this.level) return;
+
 		let meta = {};
 
 		if (args[0] instanceof Object)
 			meta = args.shift();
+
+		if (this.trace)
+			meta["trace"] = this.captureStackTrace();
 
 		for (const i in this.targets)
 			this.targets[i].log.call(this.targets[i], level, facility, args, meta);
@@ -245,10 +341,23 @@ export class Logger implements ILogger {
 	 * Create facility logger wrapper
 	 *
 	 * @param name Facility name
+	 * @param config Facility configuration
 	 */
-	public facility(name: string) {
+	public facility(name: string, config: ILoggerFacilityConfig = {}) {
 
-		return new LoggerFacility(this, name);
+		if (this.facilities[name])
+			return this.facilities[name];
+
+		return this.facilities[name] = new LoggerFacility(this, name, config);
+
+	}
+
+	/**
+	 * Return registered facilities
+	 */
+	public getAllFacilities() {
+
+		return this.facilities;
 
 	}
 
@@ -306,6 +415,31 @@ export class Logger implements ILogger {
 	public toConsole(options: IConsoleTargetOptions = {}) {
 
 		this.targets["__console__"] = new ConsoleTarget(options);
+		return this;
+
+	}
+
+	/**
+	 * Add memory target
+	 *
+	 * Overrides existings memory target defined previously by this method.
+	 *
+	 * Usage:
+	 *
+	 * ```
+	 * logger.toMemory({
+	 * 	level: LOG_LEVEL.DEBUG,
+	 * 	limit: 1000
+	 * });
+	 *
+	 * logger.getTarget("__memory__").getMessages();
+	 * ```
+	 *
+	 * @param options Target options
+	 */
+	public toMemory(options: IMemoryTargetOptions = {}) {
+
+		this.targets["__memory__"] = new MemoryTarget(options);
 		return this;
 
 	}

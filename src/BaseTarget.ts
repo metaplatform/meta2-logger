@@ -126,7 +126,7 @@ export abstract class BaseTarget implements ILoggerTarget {
 			msg.unshift(util.format("%s-%s-%s %s:%s:%s",
 				t.getFullYear(),
 				("0" + (t.getMonth() + 1)).substr(-2),
-				("0" + (t.getDate() + 1)).substr(-2),
+				("0" + (t.getDate())).substr(-2),
 				("0" + t.getHours()).substr(-2),
 				("0" + t.getMinutes()).substr(-2),
 				("0" + t.getSeconds()).substr(-2)

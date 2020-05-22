@@ -1,5 +1,7 @@
 # Typescript sources
 /src
 /__tests__
+/dist/__tests__
 tsconfig.json
 tslint.json
+jest.config.js
